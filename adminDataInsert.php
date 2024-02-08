@@ -25,7 +25,7 @@ try {
         (!isset($adminData["admin_name"]) || empty($adminData["admin_name"])) ||
         (!isset($adminData["admin_psw"]) || empty($adminData["admin_psw"])) ||
         (!isset($adminData["status"]) || empty($adminData["status"])) ||
-        (!isset($adminData["admin_level"]) || empty($adminData["admin_level"]))
+        (!isset($adminData["admin_level"]) || !is_numeric($adminData["admin_level"]))
     ) {
         $result = ["error" => true, "msg" => "請提供所有必填欄位的值"];
     } else {
