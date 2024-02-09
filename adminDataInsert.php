@@ -12,13 +12,13 @@ try {
     //這個標頭指定了哪些 HTTP 標頭可以在實際的請求中使用
     header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-    require_once("connect_chd104g2.php");
+    // require_once("connect_chd104g2.php");
 
-    // if ($_SERVER["HTTP_HOST"] == 'localhost' || $_SERVER["HTTP_HOST"] == '127.0.0.1') {
-    //     require_once("connect_local.php");
-    // } else {
-    //     require_once("https://tibamef2e.com/chd104/g2/php/connect_chd104g2");
-    // }
+    if ($_SERVER["HTTP_HOST"] == 'localhost' || $_SERVER["HTTP_HOST"] == '127.0.0.1') {
+        require_once("connect_local.php");
+    } else {
+        require_once("https://tibamef2e.com/chd104/g2/php/connect_chd104g2");
+    }
 
     if (
             //檢查欄位是否存在 且 欄位是否有值
