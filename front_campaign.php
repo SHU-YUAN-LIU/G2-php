@@ -3,16 +3,18 @@ $productData = json_decode(file_get_contents("php://input"), true);
 //true一定要寫
 // json_decode()把字串變物件(PHP的方法)
 
-ini_set("display_errors", "On"); //直接在頁面上看到 PHP 錯誤訊息
+ini_set("display_errors", "On"); //改變ini檔設定，原本預設"錯誤"不會顯示，打開後可以在頁面上看到 PHP 錯誤訊息
 
 try {
 
-	header("Access-Control-Allow-Origin: *");
-	header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
-	header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+	
+	// header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+	// header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 	if ($_SERVER["HTTP_HOST"] == 'localhost' || $_SERVER["HTTP_HOST"] == '127.0.0.1') {
 		require_once("connect_chd104g2.php");
+		header("Access-Control-Allow-Origin: *");
+		header("Content-Type: applicaiotn/json;charset=UTF-8");
 	} else {
 		// 生產環境
 		require_once("https://tibamef2e.com/chd104/g2/php/connect_chd104g2");
