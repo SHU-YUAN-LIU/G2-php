@@ -14,6 +14,7 @@ try {
 	if ($_SERVER["HTTP_HOST"] == 'localhost' || $_SERVER["HTTP_HOST"] == '127.0.0.1') {
 		require_once("connect_chd104g2.php");
 	} else {
+		// 生產環境
 		require_once("https://tibamef2e.com/chd104/g2/php/connect_chd104g2");
 	}
 
