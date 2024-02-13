@@ -7,13 +7,14 @@ ini_set("display_errors", "On"); //直接在頁面上看到 PHP 錯誤訊息
 
 try {
 
-	header("Access-Control-Allow-Origin: *");
+	header("Access-Control-Allow-Origin: *"); //允許跨域存取
 	header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 	header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 	if ($_SERVER["HTTP_HOST"] == 'localhost' || $_SERVER["HTTP_HOST"] == '127.0.0.1') {
-		require_once("connect_chd104g2.php");
+		require_once("connect_local.php");
 	} else {
+		//生產環境
 		require_once("https://tibamef2e.com/chd104/g2/php/connect_chd104g2");
 	}
 
