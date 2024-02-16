@@ -7,13 +7,12 @@ ini_set("display_errors", "On"); //改變ini檔設定，原本預設"錯誤"不�
 
 try {
 	header("Access-Control-Allow-Origin: *");
-    header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
-    header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+	header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+	header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 	if ($_SERVER["HTTP_HOST"] == 'localhost' || $_SERVER["HTTP_HOST"] == '127.0.0.1') {
-		
+
 		require_once("connect_local.php");
-		
 	} else {
 		// 生產環境
 		require_once("https://tibamef2e.com/chd104/g2/php/connect_chd104g2");
@@ -22,7 +21,7 @@ try {
 
 	//建立sql指令
 	$pdo->beginTransaction(); //sql語法(開始交易)
-	$sql = "select * from campaign"; //  選擇table
+	$sql = "select * from campaign  where status='A'"; //  選擇table
 	$campaign = $pdo->prepare($sql); //php語法(再執行一次,可以提升安全)
 	$campaign->execute(); // 執行 SQL 語句以獲取資料
 	$campaignRows = $campaign->fetchAll(PDO::FETCH_ASSOC); // 檢索資料

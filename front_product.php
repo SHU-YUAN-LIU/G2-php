@@ -21,7 +21,7 @@ try {
 
 	//建立sql指令
 	$pdo->beginTransaction(); //sql語法(開始交易)
-	$sql = "select * from product";
+	$sql = "select * from product where status='A'";
 	$products = $pdo->prepare($sql); //php語法(再執行一次,可以提升安全)
 	$products->execute(); // 執行 SQL 語句以獲取資料
 	$productRows = $products->fetchAll(PDO::FETCH_ASSOC); // 檢索資料
