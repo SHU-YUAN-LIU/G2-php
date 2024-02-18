@@ -10,7 +10,8 @@ try {
     if ($_SERVER["HTTP_HOST"] == 'localhost' || $_SERVER["HTTP_HOST"] == '127.0.0.1') {
         require_once("connect_local.php");
     }else{
-        require_once("https://tibamef2e.com/chd104/g2/php/connect_chd104g2.php");
+        // require_once("https://tibamef2e.com/chd104/g2/php/connect_chd104g2.php");
+        require_once("connect_chd104g2.php");
     }
     //建立sql指令
     $sql = "select * from admin_master where admin_no=:admin_no and admin_psw=:admin_psw";
