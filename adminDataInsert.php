@@ -17,7 +17,9 @@ try {
     if ($_SERVER["HTTP_HOST"] == 'localhost' || $_SERVER["HTTP_HOST"] == '127.0.0.1') {
         require_once("connect_local.php");
     } else {
-        require_once("https://tibamef2e.com/chd104/g2/php/connect_chd104g2");
+        // require_once("https://tibamef2e.com/chd104/g2/php/connect_chd104g2");
+        require_once("connect_chd104g2.php");
+
     }
 
     if (
@@ -33,13 +35,15 @@ try {
         //建立sql指令
         $sql = "insert into admin_master 
     (admin_name,admin_psw,status,admin_level,creator,admin_hiredate,modifier,modify_date)
-    values (:admin_name,:admin_psw,:status,:admin_level,1,now(),1,now())";
+    values (:admin_name,:admin_psw,:status,:admin_level,:creator,now(),:modifier,now())";
 
         $admins = $pdo->prepare($sql);
         $admins->bindValue(":admin_name", $adminData["admin_name"]);
         $admins->bindValue(":admin_psw", $adminData["admin_psw"]);
         $admins->bindValue(":status", $adminData["status"]);
         $admins->bindValue(":admin_level", $adminData["admin_level"]);
+        $admins->bindValue(":creator", $adminData["creator"]);
+        $admins->bindValue(":modifier", $adminData["modifier"]);
         $admins->execute();
 
         $result = ["error" => false, "msg" => "成功新增管理員資料"];

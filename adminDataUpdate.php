@@ -18,7 +18,9 @@ try {
     if ($_SERVER["HTTP_HOST"] == 'localhost' || $_SERVER["HTTP_HOST"] == '127.0.0.1') {
         require_once("connect_local.php");
     } else {
-        require_once("https://tibamef2e.com/chd104/g2/php/connect_chd104g2");
+        // require_once("https://tibamef2e.com/chd104/g2/php/connect_chd104g2");
+        require_once("connect_chd104g2.php");
+
     }
 
     if (
@@ -39,7 +41,7 @@ try {
         admin_psw = :admin_psw,
         status = :status,
         admin_level = :admin_level,
-        modifier = 1,
+        modifier = :modifier,
         modify_date = now()
         where admin_no = :admin_no";
 
@@ -49,6 +51,7 @@ try {
         $admins->bindValue(":admin_psw", $adminData["admin_psw"]);
         $admins->bindValue(":status", $adminData["status"]);
         $admins->bindValue(":admin_level", $adminData["admin_level"]);
+        $admins->bindValue(":modifier", $adminData["modifier"]);
         $admins->execute();
 
         $result = ["error" => false, "msg" => "成功新增管理員資料"];
