@@ -41,7 +41,7 @@ try {
         admin_psw = :admin_psw,
         status = :status,
         admin_level = :admin_level,
-        modifier = 1,
+        modifier = :modifier,
         modify_date = now()
         where admin_no = :admin_no";
 
@@ -51,6 +51,7 @@ try {
         $admins->bindValue(":admin_psw", $adminData["admin_psw"]);
         $admins->bindValue(":status", $adminData["status"]);
         $admins->bindValue(":admin_level", $adminData["admin_level"]);
+        $admins->bindValue(":modifier", $adminData["modifier"]);
         $admins->execute();
 
         $result = ["error" => false, "msg" => "成功新增管理員資料"];
