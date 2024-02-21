@@ -1,15 +1,10 @@
 <?php
 require_once __DIR__ . '/php-jwt-main/src/JWT.php';
-// if (class_exists('Firebase\JWT\JWT')) {
-//     echo 'JWT class is loaded';
-// } else {
-//     echo 'JWT class is NOT loaded';
-// }
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
 $key = '932a16ed03910aead1a99939ba804186f6d163d789f357edec9f798aab231ac3';
-// echo $key; // 保持這個key安全，不要公開
+// 保持這個key安全，不要公開
 
 $email = $_POST['email'];
 $psw = $_POST['psw'];
@@ -60,6 +55,16 @@ try {
     echo "系統暫時不能正常運行，請稍後再試<br>";	
 }
 echo json_encode($result);
+
+
+
+
+
+
+
+
+
+
 
 
 
