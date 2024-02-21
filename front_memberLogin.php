@@ -41,8 +41,8 @@ try {
 
     if (count($memberRow) > 0) {
         $payload = [
-            "iss" => "your_domain.com",
-            "aud" => "your_domain.com",
+            "iss" => "",
+            "aud" => "",
             "iat" => time(),
             "exp" => time() + (60*60), // Token有效期1小時
             "sub" => $memberRow['member_no'], // 使用用戶ID作為subject
