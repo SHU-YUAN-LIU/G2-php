@@ -1,22 +1,19 @@
 <?php
 require_once __DIR__ . '/php-jwt-main/src/JWT.php';
-if (class_exists('Firebase\JWT\JWT')) {
-    // echo 'JWT class is loaded';
-} else {
-    // echo 'JWT class is NOT loaded';
-}
+// if (class_exists('Firebase\JWT\JWT')) {
+//     echo 'JWT class is loaded';
+// } else {
+//     echo 'JWT class is NOT loaded';
+// }
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
 $key = '932a16ed03910aead1a99939ba804186f6d163d789f357edec9f798aab231ac3';
 // echo $key; // 保持這個key安全，不要公開
 
-
-
-
 $email = $_POST['email'];
 $psw = $_POST['psw'];
-ini_set("display_errors", "off");
+ini_set("display_errors", "on");
 
 try {
     session_start();
@@ -31,18 +28,18 @@ try {
     }
     //建立sql指令
     $sql = "select * from member where email=:member_email and password=:member_psw";
-
     $member = $pdo->prepare($sql);
     $member->bindValue(":member_email",$email);
     $member->bindValue(":member_psw",$psw);
     $member->execute();
-    $memberRow = $member->fetchAll(PDO::FETCH_ASSOC);
+    $memberRows = $member->fetchAll(PDO::FETCH_ASSOC);
 
 
-    if (count($memberRow) > 0) {
+    if (count($memberRows) > 0) {
+        $memberRow = $memberRows[0];
         $payload = [
-            "iss" => "",
-            "aud" => "",
+            // "iss" => "",
+            // "aud" => "",
             "iat" => time(),
             "exp" => time() + (60*60), // Token有效期1小時
             "sub" => $memberRow['member_no'], // 使用用戶ID作為subject
