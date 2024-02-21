@@ -1,33 +1,25 @@
 <?php
 require_once __DIR__ . '/php-jwt-main/src/JWT.php';
 if (class_exists('Firebase\JWT\JWT')) {
-    echo 'JWT class is loaded';
+    // echo 'JWT class is loaded';
 } else {
-    echo 'JWT class is NOT loaded';
+    // echo 'JWT class is NOT loaded';
 }
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
 $key = '932a16ed03910aead1a99939ba804186f6d163d789f357edec9f798aab231ac3';
-echo $key; // 保持這個key安全，不要公開
-$payload = [
-    "iss" => "your_domain.com",
-    "aud" => "your_domain.com",
-    "iat" => time(),
-    "exp" => time() + (60*60), // Token有效期1小時
-    "sub" => $memberRow['email'], // 使用用戶ID作為subject
-];
+// echo $key; // 保持這個key安全，不要公開
 
-$jwt = JWT::encode($payload, $key, 'HS256');
 
 
 
 $email = $_POST['email'];
 $psw = $_POST['psw'];
-ini_set("display_errors", "On");
-session_start();
-try {
+ini_set("display_errors", "off");
 
+try {
+    session_start();
     header("Access-Control-Allow-Origin: *");
     header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
     header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
@@ -44,10 +36,19 @@ try {
     $member->bindValue(":member_email",$email);
     $member->bindValue(":member_psw",$psw);
     $member->execute();
-    $memberRow = $member->fetch(PDO::FETCH_ASSOC);
+    $memberRow = $member->fetchAll(PDO::FETCH_ASSOC);
 
 
     if (count($memberRow) > 0) {
+        $payload = [
+            "iss" => "your_domain.com",
+            "aud" => "your_domain.com",
+            "iat" => time(),
+            "exp" => time() + (60*60), // Token有效期1小時
+            "sub" => $memberRow['member_no'], // 使用用戶ID作為subject
+        ];
+        
+        $jwt = JWT::encode($payload, $key, 'HS256');
         // 用戶存在，處理登入成功的邏輯
         unset($memberRow['password']); // 從結果中移除密碼
         $_SESSION['user'] = $memberRow; // 存儲用戶資料到 session
