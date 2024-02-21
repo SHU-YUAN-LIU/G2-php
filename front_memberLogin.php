@@ -1,5 +1,27 @@
 <?php
-// print_r($_POST); // 臨時加這行來檢查接收到的數據
+require_once __DIR__ . '/php-jwt-main/src/JWT.php';
+if (class_exists('Firebase\JWT\JWT')) {
+    echo 'JWT class is loaded';
+} else {
+    echo 'JWT class is NOT loaded';
+}
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+
+$key = '932a16ed03910aead1a99939ba804186f6d163d789f357edec9f798aab231ac3';
+echo $key; // 保持這個key安全，不要公開
+$payload = [
+    "iss" => "your_domain.com",
+    "aud" => "your_domain.com",
+    "iat" => time(),
+    "exp" => time() + (60*60), // Token有效期1小時
+    "sub" => $memberRow['email'], // 使用用戶ID作為subject
+];
+
+$jwt = JWT::encode($payload, $key, 'HS256');
+
+
+
 $email = $_POST['email'];
 $psw = $_POST['psw'];
 ini_set("display_errors", "On");
@@ -29,7 +51,7 @@ try {
         // 用戶存在，處理登入成功的邏輯
         unset($memberRow['password']); // 從結果中移除密碼
         $_SESSION['user'] = $memberRow; // 存儲用戶資料到 session
-        $result = ["error" => false, "code" => 1, "member" => $memberRow];
+        $result = ["error" => false, "code" => 1, "token" => $jwt];
     } else {
         // 用戶不存在或密碼錯誤，處理登入失敗的邏輯
         $result = ["error" => true, "code" => 0, "msg" => "登入失敗，電子郵件或密碼錯誤。"];
@@ -37,7 +59,7 @@ try {
     
 } catch (PDOException $e) {
     $result = ["error" => true, "msg" => $e->getMessage()];
-    // echo "系統暫時不能正常運行，請稍後再試<br>";	
+    echo "系統暫時不能正常運行，請稍後再試<br>";	
 }
 echo json_encode($result);
 
