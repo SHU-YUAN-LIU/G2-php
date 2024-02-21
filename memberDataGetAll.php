@@ -1,5 +1,9 @@
 <?php
 $memberData = json_decode(file_get_contents("php://input"), true);
+
+$email = $_POST['email'];
+$psw = $_POST['psw'];
+
 ini_set("display_errors", "On");
 try {
 
@@ -14,8 +18,13 @@ try {
 
     }
     //建立sql指令
-    $sql = "select * from member";
+    $sql = "select * from member where email = :member_email AND password = :member_psw";
     $members = $pdo->query($sql);
+
+    $member->bindValue(":member_email", $email);
+    $member->bindValue(":member_psw", $psw);
+    $member->execute();
+
     $memberRows = $members->fetchAll(PDO::FETCH_ASSOC);
 
     $result = ["error" => false, "msg" => "", "members" => $memberRows];
