@@ -1,5 +1,5 @@
 <?php
-
+$campaign_no=$_POST["campaign_no"];
 try {
 
     header("Access-Control-Allow-Origin: *");
@@ -17,25 +17,22 @@ try {
 
     //建立sql指令
     $sql = "select 
-	a.product_no as 'product_no',
-	a.product_name as 'product_name',
-	a.info as 'info',
-	a.price as 'price',
-	a.status as 'status',
-	a.product_pic1 as 'product_pic1',
-	a.product_pic2 as 'product_pic2',
-	a.product_pic3 as 'product_pic3',
-	a.product_pic4 as 'product_pic4',
-	a.product_intro as 'product_intro',
-    a.product_intro_pic1 as 'product_intro_pic1',
-    a.product_intro_pic2 as 'product_intro_pic2',
-    a.product_size_pic1 as 'product_size_pic1',
-	b.product_class as 'product_class'
-	from product a join product_class b on a.product_class_no = b.product_class_no;";
-    $products = $pdo->query($sql);
-    $productRows = $products->fetchAll(PDO::FETCH_ASSOC);
+    campaign_no,
+	campaign_name,
+    cadres,
+    address,
+    status,
+    start_date,
+    end_date,
+    content,
+    pic
+	from campaign where campaign_no=:campaign_no;";
+    $campaign = $pdo->prepare($sql);
+    $campaign->bindValue(':campaign_no',$campaign_no);
+    $campaign->execute();
+    $campaignRows = $campaign->fetchAll(PDO::FETCH_ASSOC);
 
-    $result = ["error" => false, "msg" => "", "products" => $productRows];
+    $result = ["error" => false, "msg" => "", "campaign" => $campaignRows];
 
 } catch (PDOException $e) {
     $result = ["error" => true, "msg" => $e->getMessage()];

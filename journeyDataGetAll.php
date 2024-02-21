@@ -17,25 +17,16 @@ try {
 
     //建立sql指令
     $sql = "select 
-	a.product_no as 'product_no',
-	a.product_name as 'product_name',
-	a.info as 'info',
-	a.price as 'price',
-	a.status as 'status',
-	a.product_pic1 as 'product_pic1',
-	a.product_pic2 as 'product_pic2',
-	a.product_pic3 as 'product_pic3',
-	a.product_pic4 as 'product_pic4',
-	a.product_intro as 'product_intro',
-    a.product_intro_pic1 as 'product_intro_pic1',
-    a.product_intro_pic2 as 'product_intro_pic2',
-    a.product_size_pic1 as 'product_size_pic1',
-	b.product_class as 'product_class'
-	from product a join product_class b on a.product_class_no = b.product_class_no;";
-    $products = $pdo->query($sql);
-    $productRows = $products->fetchAll(PDO::FETCH_ASSOC);
+	campaign_no,
+    cadres,
+    start_date,
+    address,
+    status
+	from campaign;";
+    $campaign = $pdo->query($sql);
+    $campaignRows = $campaign->fetchAll(PDO::FETCH_ASSOC);
 
-    $result = ["error" => false, "msg" => "", "products" => $productRows];
+    $result = ["error" => false, "msg" => "", "campaign" => $campaignRows];
 
 } catch (PDOException $e) {
     $result = ["error" => true, "msg" => $e->getMessage()];
