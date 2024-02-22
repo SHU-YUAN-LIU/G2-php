@@ -22,32 +22,22 @@ try {
         require_once("connect_chd104g2.php");
     }
 
-    if (
-
-        //檢查欄位是否存在 且 欄位是否有值
-        // 檢查 $OrderItemData["?????"] 是否是數字
-        (!isset($OrderItemData["product_no"]) ||  !is_numeric($OrderItemData["product_no"])) ||
-        (!isset($OrderItemData["qty"]) ||  !is_numeric($OrderItemData["qty"])) ||
-        (!isset($OrderItemData["price"]) ||  !is_numeric($OrderItemData["price"]))
-    ) {
-        $result = ["error" => true, "msg" => "資料尚未填寫完畢"];
-    } else {
-
+    //因為傳過來的cartlist是整包,有些是不需要的,所以用foreach自己找需要的!
+    foreach ($OrderItemData as $item) {
         //建立sql指令
-        $sql = " insert into order_item
-    (product_no,qty,price)
-    values 
-    (:product_no,:qty,:price)";
+        $sql = "INSERT INTO order_item (product_no, qty, price, orders_no) VALUES (:product_no, :qty, :price, :orders_no)";
 
         $orderItem = $pdo->prepare($sql); //php語法(先執行一次,可以提升安全,做完這句指令,讓他限縮在挖空的裡面)
-        $orderItem->bindValue(":product_no", $OrderItemData["product_no"]);
-        $orderItem->bindValue(":qty", $OrderItemData["qty"]);
-        $orderItem->bindValue(":price", $OrderItemData["price"]);
+        $orderItem->bindValue(":orders_no", $item["orders_no"]);
+        $orderItem->bindValue(":product_no", $item["product_no"]);
+        $orderItem->bindValue(":qty", $item["qty"]);
+        $orderItem->bindValue(":price", $item["price"]);
 
         $orderItem->execute();
-
-        $result = ["error" => false, "msg" => "成功新增商品訂單"];
     }
+
+
+    $result = ["error" => false, "msg" => "成功新增商品訂單"];
 } catch (PDOException $e) {
     $result = ["error" => true, "msg" => $e->getMessage()];
     // echo "系統暫時不能正常運行，請稍後再試<br>";	

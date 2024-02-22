@@ -57,7 +57,9 @@ try {
         $orders->bindValue(":final_price", $productOrderData["final_price"]);
         $orders->execute();
 
-        $result = ["error" => false, "msg" => "成功新增商品訂單"];
+        $PK = $pdo->lastInsertId(); //拿到上一筆新增的PK(orders_no)
+
+        $result = ["error" => false, "msg" => "成功新增商品訂單", "PK" => $PK]; //這邊要回傳>新增的PK(orders_no)
     }
 } catch (PDOException $e) {
     $result = ["error" => true, "msg" => $e->getMessage()];
