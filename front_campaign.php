@@ -1,5 +1,5 @@
 <?php
-$productData = json_decode(file_get_contents("php://input"), true);
+$campaignData = json_decode(file_get_contents("php://input"), true);
 //true一定要寫
 // json_decode()把字串變物件(PHP的方法)
 
@@ -21,8 +21,8 @@ try {
 
 	//建立sql指令
 	$pdo->beginTransaction(); //sql語法(開始交易)
-	$sql = "select * from campaign  where status='A'"; //  選擇table
-	$campaign = $pdo->prepare($sql); //php語法(再執行一次,可以提升安全)
+	$sql = "select * from campaign "; //  選擇table
+	$campaign = $pdo->prepare($sql); //php語法(先執行一次,可以提升安全)
 	$campaign->execute(); // 執行 SQL 語句以獲取資料
 	$campaignRows = $campaign->fetchAll(PDO::FETCH_ASSOC); // 檢索資料
 	$pdo->commit(); //提交事務
