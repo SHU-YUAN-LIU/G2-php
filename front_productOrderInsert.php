@@ -26,14 +26,14 @@ try {
 
         //檢查欄位是否存在 且 欄位是否有值
         // 檢查 $productOrderData["member_no"] 是否不存在或為空。
-        (!isset($productOrderData["member_no"]) || empty($productOrderData["member_no"])) ||
+        // (!isset($productOrderData["member_no"]) || empty($productOrderData["member_no"])) ||
         (!isset($productOrderData["receiver_name"]) || empty($productOrderData["receiver_name"])) ||
         (!isset($productOrderData["receiver_phone"]) ||  !is_numeric($productOrderData["receiver_phone"])) ||
-        (!isset($productOrderData["shipping"]) || !empty($productOrderData["shipping"])) ||
-        (!isset($productOrderData["receiver_address"]) || !empty($productOrderData["receiver_address"])) ||
-        (!isset($productOrderData["payment_method"]) || !empty($productOrderData["payment_method"])) ||
-        (!isset($productOrderData["total_point"]) || !empty($productOrderData["total_point"])) ||
-        (!isset($productOrderData["final_price"]) || !empty($productOrderData["final_price"]))
+        (!isset($productOrderData["shipping"]) || empty($productOrderData["shipping"])) ||
+        (!isset($productOrderData["receiver_address"]) || empty($productOrderData["receiver_address"])) ||
+        (!isset($productOrderData["payment_method"]) || empty($productOrderData["payment_method"])) ||
+        // (!isset($productOrderData["total_point"]) || empty($productOrderData["total_point"])) ||
+        (!isset($productOrderData["final_price"]) || empty($productOrderData["final_price"]))
 
     ) {
         $result = ["error" => true, "msg" => "資料尚未填寫完畢"];
@@ -46,15 +46,14 @@ try {
     (:member_no,:receiver_name,:receiver_phone,:shipping,:receiver_address,:payment_method,:status,now(),:total_point,:final_price)";
 
         $orders = $pdo->prepare($sql); //php語法(先執行一次,可以提升安全,做完這句指令,讓他限縮在挖空的裡面)
-        // $orders->bindValue(":member_no", $productOrderData["member_no"]);
-        $orders->bindValue(":member_no", '1');
+        $orders->bindValue(":member_no", '1'); //先寫死,等會員有再換掉
         $orders->bindValue(":receiver_name", $productOrderData["receiver_name"]);
         $orders->bindValue(":receiver_phone", $productOrderData["receiver_phone"]);
         $orders->bindValue(":shipping", $productOrderData["shipping"]);
         $orders->bindValue(":receiver_address", $productOrderData["receiver_address"]);
         $orders->bindValue(":payment_method", $productOrderData["payment_method"]);
         $orders->bindValue(":status", '處理中');
-        $orders->bindValue(":total_point", $productOrderData["total_point"]);
+        $orders->bindValue(":total_point", '300'); //先寫死,等會員有再換掉
         $orders->bindValue(":final_price", $productOrderData["final_price"]);
         $orders->execute();
 
