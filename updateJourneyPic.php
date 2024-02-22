@@ -15,6 +15,10 @@ try {
     $campaign_no=$_POST['campaign_no'];
     $pic=$_FILES['pic']['name'];
     $extension = pathinfo($pic, PATHINFO_EXTENSION);
+    $dirr='../img/';
+    if(file_exists($dirr)===false){
+        mkdir($dirr);
+    }
     $dir='../img/campaign/';
     $filename='campaign'. $campaign_no . '.' . $extension;
     if(file_exists($dir)===false){
