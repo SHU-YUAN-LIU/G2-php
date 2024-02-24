@@ -18,10 +18,10 @@ try {
 
     //建立sql指令
     $pdo->beginTransaction(); //sql語法(開始交易)
-    $sql = "SELECT * FROM product WHERE product_no = :dog";
+    $sql = "SELECT * FROM product WHERE product_no = :pro";
     $oneProduct = $pdo->prepare($sql); //php語法(先執行一次,可以提升安全,做完這句指令,讓他限縮在挖空的裡面)
 
-    $oneProduct->bindValue(":dog", $OneProductData["product_no"]);
+    $oneProduct->bindValue(":pro", $OneProductData["product_no"]);
     $oneProduct->execute(); // 執行 SQL 語句以獲取資料
 
     $oneProductRows = $oneProduct->fetchAll(PDO::FETCH_ASSOC); // 檢索資料
