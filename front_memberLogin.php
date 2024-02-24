@@ -42,7 +42,7 @@ try {
         // 用戶存在，處理登入成功的邏輯
         unset($memberRow['password']); // 從結果中移除密碼
         $_SESSION['member'] = $memberRow; // 存儲用戶資料到 session
-        $result = ["error" => false, "code" => 1, "token" => $jwt];
+        $result = ["error" => false, "code" => 1, "token" => $jwt, "member" => $memberRow];
     } else {
         // 用戶不存在或密碼錯誤，處理登入失敗的邏輯
         $result = ["error" => true, "code" => 0, "msg" => "登入失敗，電子郵件或密碼錯誤。"];
