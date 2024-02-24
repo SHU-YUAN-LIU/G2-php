@@ -28,10 +28,11 @@ try {
         $sql = "INSERT INTO order_item (product_no, qty, price, orders_no) VALUES (:product_no, :qty, :price, :orders_no)";
 
         $orderItem = $pdo->prepare($sql); //php語法(先執行一次,可以提升安全,做完這句指令,讓他限縮在挖空的裡面)
-        $orderItem->bindValue(":orders_no", $item["orders_no"]);
+
         $orderItem->bindValue(":product_no", $item["product_no"]);
         $orderItem->bindValue(":qty", $item["qty"]);
         $orderItem->bindValue(":price", $item["price"]);
+        $orderItem->bindValue(":orders_no", $item["orders_no"]);
 
         $orderItem->execute();
     }
