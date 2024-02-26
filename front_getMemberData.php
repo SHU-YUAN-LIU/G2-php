@@ -20,7 +20,9 @@ try {
     member_name,
     cellphone,
     email,
-    address
+    address,
+    point
+    
 	from member 
     where member_no=:member_no;";
     $member = $pdo->prepare($sql);

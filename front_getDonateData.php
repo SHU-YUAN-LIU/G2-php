@@ -21,11 +21,10 @@ try {
     donate_method,
     donate_amount,
     point
-
-	from donate
-    where donate_no=:donate_no;";
+	from donate_record
+    where member_no=:member_no;";
     $donate = $pdo->prepare($sql);
-    $donate->bindValue(':donate_no', $donate_no['donate_no']);
+    $donate->bindValue(':member_no', $donate_no['member_no']);
     $donate->execute();
     $donateRows = $donate->fetchAll(PDO::FETCH_ASSOC);
 
