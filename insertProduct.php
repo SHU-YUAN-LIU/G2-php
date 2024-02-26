@@ -37,7 +37,7 @@ try {
     $product_class_no = $classNoRow['product_class_no'];
 
 	//建立sql指令
-    $sql = "update product set 
+    $sql = "insert into product
     product_name=:name,
     product_class_no=:class_no,
     price=:price,
@@ -53,6 +53,7 @@ try {
     product_intro_pic2=:currentpic6,
     product_size_pic=:currentpic7,
     where product_no=:product_no";
+    
 
     
 
@@ -73,7 +74,9 @@ try {
     $products->bindValue(":product_no", $product_no);
     $products->execute();
 
-	$result = ["error" => false, "msg" => "成功更新商品資料"];
+    $PK=$pdo->lastInsertId();
+
+	$result = ["error" => false, "msg" => "成功更新商品資料","PK"=>$PK];
 
 } catch (PDOException $e) {
 	$result = ["error" => true, "msg" => $e->getMessage()];
