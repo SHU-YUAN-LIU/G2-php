@@ -15,20 +15,10 @@ try {
     }
 
     //建立sql指令
-    $sql = "select 
-    orders_no,
-    receiver_name,
-    receiver_phone,
-    receiver_address,
-    shipping,
-    payment_method,
-    status,
-    orders_date,
-    final_price
-	from orders
-    where orders_no=:orders_no;";
+    $sql = "select * from orders
+    where member_no=:member_no;";
     $orders = $pdo->prepare($sql);
-    $orders->bindValue(':orders_no', $orders_no['orders_no']);
+    $orders->bindValue(':member_no', $orders_no['member_no']);
     $orders->execute();
     $ordersRows = $orders->fetchAll(PDO::FETCH_ASSOC);
 
