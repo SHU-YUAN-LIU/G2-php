@@ -4,7 +4,8 @@ $donateAmount = $_POST['donateAmount'];
 $donateClass = $_POST['donateClass'];
 $donatePoint = $_POST['donatePoint'];
 $donateEmail = $_POST['donateEmail'];
-$donatePhone = $_POST['donatePhone'];
+$donateCellphone = $_POST['donateCellphone'];
+$donateNo = $_POST['donateno'];
 echo $donatePoint;
 ini_set("display_errors", "On"); 
 
@@ -32,17 +33,19 @@ try {
         donate_date,
         point,
         cellphone,
-        email   
+        email,
+        member_no   
     )
-    VALUES (:donate_class, :donate_method, :donate_amount, now(), :donate_point, :cellphone, :email)";
+    VALUES (:donate_class, :donate_method, :donate_amount, now(), :donate_point, :cellphone, :email, :member_no)";
     
 	$donate = $pdo->prepare($sql); 
 	$donate->bindValue(":donate_class", $donateClass);
     $donate->bindValue(":donate_method", "信用卡");   
     $donate->bindValue(":donate_amount", $donateAmount);
     $donate->bindValue(":donate_point", $donatePoint);
-    $donate->bindValue(":cellphone", $donatePhone);
+    $donate->bindValue(":cellphone", $donateCellphone);
     $donate->bindValue(":email", $donateEmail);
+    $donate->bindValue(":member_no", $donateNo);
     $donate->execute();
 	$result = ["error" => false, "msg" => ""];
 
