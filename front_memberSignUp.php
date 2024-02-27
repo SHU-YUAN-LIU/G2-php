@@ -1,7 +1,11 @@
 <?php
-$registerForm = json_decode(file_get_contents("php://input"), true);
-//true一定要寫,json_decode()把字串變物件(PHP的方法)
-echo $registerForm ;
+
+$memberName = $_POST['member_name'];
+$memberBirthday = $_POST['member_birthday'];
+$memberEmail = $_POST['member_email'];
+$memberCell = $_POST['member_cellphone'];
+$memberId = $_POST['member_id'];
+$memberPsw = $_POST['member_psw'];
 
 //用來將錯誤訊息直接輸出到瀏覽器
 ini_set("display_errors", "On");
@@ -20,30 +24,48 @@ try {
         require_once("connect_chd104g2.php");
     }
 
-        //建立sql指令
-        $sql = " insert into member
-        (member_name,cellphone,email,password,status,create_date,birthday,id_number)
-        values 
-        (:member_name,:cellphone,:email,:password,:status,now(),:birthday,:id_number)";
 
-        $memberData = $pdo->prepare($sql); //php語法(先執行一次,可以提升安全,做完這句指令,讓他限縮在挖空的裡面)
-        $memberData->bindValue(":member_name", $registerForm["member_name"]);
-        $memberData->bindValue(":cellphone", $registerForm["cellphone"]);
-        $memberData->bindValue(":email", $registerForm["email"]);
-        $memberData->bindValue(":password", $registerForm["password"]);
-        $memberData->bindValue(":status", 'A');
-        $memberData->bindValue(":birthday", $registerForm["birthday"]);
-        $memberData->bindValue(":id_number", $registerForm["id_number"]);
-        $memberData->execute();
+    // 检查邮箱是否已存在
+    $sql = "SELECT email FROM member WHERE email = :email";
+    $checkEmail = $pdo->prepare($sql);
+    $checkEmail->bindValue(':email',$memberEmail);
+    $checkEmail->execute();
+    $checkEmailRows = $checkEmail->fetchAll(PDO::FETCH_ASSOC);
 
-        if (!isset($registerForm["member_name"], $registerForm["cellphone"], $registerForm["email"], $registerForm["password"], $registerForm["birthday"], $registerForm["id_number"])) {
-            throw new Exception("表单字段缺失或格式错误。");
-        } 
+    if (count($checkEmailRows) > 0) {
+        $result = ["error" => true, "msg" => "信箱已註冊過"];
+    }else{
+                //建立sql指令
+                $sql = " INSERT INTO member (
+                    member_name,
+                    cellphone,
+                    email,
+                    password,
+                    status,
+                    create_date,
+                    birthday,
+                    id_number,
+                    point,
+                    modifier,
+                    modify_date
+                )
+                values 
+                (:member_name,:cellphone,:email,:password,:status,now(),:birthday,:id_number, :point, :modifier, now())";
+        
+                $memberData = $pdo->prepare($sql); //php語法(先執行一次,可以提升安全,做完這句指令,讓他限縮在挖空的裡面)
+                $memberData->bindValue(":member_name", $memberName);
+                $memberData->bindValue(":cellphone", $memberCell);
+                $memberData->bindValue(":email", $memberEmail);
+                $memberData->bindValue(":password", $memberPsw);
+                $memberData->bindValue(":status", 'A');
+                $memberData->bindValue(":birthday", $memberBirthday);
+                $memberData->bindValue(":id_number", $memberId);
+                $memberData->bindValue(":point", '0');
+                $memberData->bindValue(":modifier", '2');
+                $memberData->execute();
 
-        $PK = $pdo->lastInsertId(); //拿到上一筆新增的PK(member_no)
-        echo json_encode(["PK" => $PK]); // 正確地返回JSON格式的PK
-        $result = ["error" => false, "msg" => "註冊成功", "PK" => $PK, "memberData" => $memberData]; //這邊要回傳>新增的PK(member_no)      
-
+                $result = ["error" => false, "msg" => "註冊成功"];
+    }
 } catch (PDOException $e) {
     $result = ["error" => true, "msg" => $e->getMessage()];
     // echo "系統暫時不能正常運行，請稍後再試<br>";	
