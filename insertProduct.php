@@ -6,13 +6,6 @@ $price=$_POST['price'];
 $status=$_POST['status'];
 $info=$_POST['info'];
 $intro=$_POST['intro'];
-$currentpic1=$_POST['currentpic1'];
-$currentpic2=$_POST['currentpic2'];
-$currentpic3=$_POST['currentpic3'];
-$currentpic4=$_POST['currentpic4'];
-$currentpic5=$_POST['currentpic5'];
-$currentpic6=$_POST['currentpic6'];
-$currentpic7=$_POST['currentpic7'];
 
 ini_set("display_errors","On");
 try {
@@ -28,30 +21,14 @@ try {
 
     }
 
-    // 查询 product_class_no
-    $getClassNoSQL = "SELECT product_class_no FROM product_class WHERE product_class = :type";
-    $getClassNoStmt = $pdo->prepare($getClassNoSQL);
-    $getClassNoStmt->bindValue(":type", $type);
-    $getClassNoStmt->execute();
-    $classNoRow = $getClassNoStmt->fetch(PDO::FETCH_ASSOC);
-    $product_class_no = $classNoRow['product_class_no'];
-
 	//建立sql指令
-    $sql = "insert into product
+    $sql = "insert into product 
     product_name=:name,
     product_class_no=:class_no,
     price=:price,
     status=:status,
     info=:info,
-    product_intro=:intro,
-    content=:content,
-    product_pic1=:currentpic1,
-    product_pic2=:currentpic2,
-    product_pic3=:currentpic3,
-    product_pic4=:currentpic4,
-    product_intro_pic1=:currentpic5,
-    product_intro_pic2=:currentpic6,
-    product_size_pic=:currentpic7,
+    product_intro=:intro
     where product_no=:product_no";
     
 
@@ -59,18 +36,11 @@ try {
 
     $products = $pdo->prepare($sql);
     $products->bindValue(":name", $name);
-    $products->bindValue(":class_no", $product_class_no);
+    $products->bindValue(":class_no", $type);
     $products->bindValue(":price", $price);
     $products->bindValue(":status", $status);
     $products->bindValue(":info", $info);
     $products->bindValue(":intro", $intro);
-    $products->bindValue(":currentpic1", $currentpic1);
-    $products->bindValue(":currentpic2", $currentpic2);
-    $products->bindValue(":currentpic3", $currentpic3);
-    $products->bindValue(":currentpic4", $currentpic4);
-    $products->bindValue(":currentpic5", $currentpic5);
-    $products->bindValue(":currentpic6", $currentpic6);
-    $products->bindValue(":currentpic7", $currentpic7);
     $products->bindValue(":product_no", $product_no);
     $products->execute();
 
