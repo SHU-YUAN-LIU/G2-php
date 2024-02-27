@@ -16,6 +16,7 @@ try {
     }
 
 
+    
     //建立sql指令
     $sql = "select 
 	a.product_no as 'product_no',
