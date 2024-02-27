@@ -1,5 +1,5 @@
 <?php 
-$product_no=$_POST['product_no'];
+// $product_no=$_POST['product_no'];
 $name=$_POST['name'];
 $type=$_POST['type'];
 $price=$_POST['price'];
@@ -23,13 +23,9 @@ try {
 
 	//建立sql指令
     $sql = "insert into product 
-    product_name=:name,
-    product_class_no=:class_no,
-    price=:price,
-    status=:status,
-    info=:info,
-    product_intro=:intro
-    where product_no=:product_no";
+    (product_name, product_class_no, price, status, info, product_intro) 
+    VALUES 
+    (:name, :class_no, :price, :status, :info, :intro)";
     
 
     
@@ -41,7 +37,7 @@ try {
     $products->bindValue(":status", $status);
     $products->bindValue(":info", $info);
     $products->bindValue(":intro", $intro);
-    $products->bindValue(":product_no", $product_no);
+    // $products->bindValue(":product_no", $product_no);
     $products->execute();
 
     $PK=$pdo->lastInsertId();
