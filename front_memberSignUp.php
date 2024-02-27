@@ -25,7 +25,7 @@ try {
     }
 
 
-    // 检查邮箱是否已存在
+    // 檢查信箱是否已存在
     $sql = "SELECT email FROM member WHERE email = :email";
     $checkEmail = $pdo->prepare($sql);
     $checkEmail->bindValue(':email',$memberEmail);
