@@ -20,24 +20,6 @@ try {
         require_once("connect_chd104g2.php");
         
     }
-    
-    // 查询 product_class_no
-    // $getClassNoSQL = "SELECT product_class_no FROM product_class WHERE product_class = :type";
-    // $getClassNoStmt = $pdo->prepare($getClassNoSQL);
-    // $getClassNoStmt->bindValue(":type", $type);
-    // $getClassNoStmt->execute();
-    // $classNoRow = $getClassNoStmt->fetch(PDO::FETCH_ASSOC);
-    // echo $classNoRow;
-    // $product_class_no = $classNoRow['product_class_no'];
-
-	//建立sql指令
-    // echo $name;
-    // echo $type;
-    // echo $price;
-    // echo $status;
-    // echo $info;
-    // echo $intro;
-    // echo $product_no;
     $sql = "update product set 
     product_name=:name,
     product_class_no=:class_no,
@@ -45,9 +27,7 @@ try {
     status=:status,
     info=:info,
     product_intro=:intro
-    where product_no=:product_no";
-
-    
+    where product_no=:product_no";    
 
     $products = $pdo->prepare($sql);
     $products->bindValue(":name", $name);
