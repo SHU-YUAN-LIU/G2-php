@@ -39,6 +39,12 @@ try {
         $result = ["error" => true, "msg" => "資料尚未填寫完畢"];
     } else {
 
+        $sql = "update member set point= point - :total_point where member_no=:member_no";
+        $member = $pdo->prepare($sql);
+        $member->bindValue(":total_point", $productOrderData["final_point"]);
+        $member->bindValue(":member_no", $productOrderData["member_no"]);
+        $member->execute();
+
         //建立sql指令
         $sql = " insert into orders
     (member_no,receiver_name,receiver_phone,shipping,receiver_address,payment_method,status,orders_date,total_point,final_price)
@@ -46,14 +52,14 @@ try {
     (:member_no,:receiver_name,:receiver_phone,:shipping,:receiver_address,:payment_method,:status,now(),:total_point,:final_price)";
 
         $orders = $pdo->prepare($sql); //php語法(先執行一次,可以提升安全,做完這句指令,讓他限縮在挖空的裡面)
-        $orders->bindValue(":member_no", '1'); //先寫死,等會員有再換掉
+        $orders->bindValue(":member_no", $productOrderData["member_no"]); //先寫死,等會員有再換掉
         $orders->bindValue(":receiver_name", $productOrderData["receiver_name"]);
         $orders->bindValue(":receiver_phone", $productOrderData["receiver_phone"]);
         $orders->bindValue(":shipping", $productOrderData["shipping"]);
         $orders->bindValue(":receiver_address", $productOrderData["receiver_address"]);
         $orders->bindValue(":payment_method", $productOrderData["payment_method"]);
         $orders->bindValue(":status", '處理中');
-        $orders->bindValue(":total_point", '300'); //先寫死,等會員有再換掉
+        $orders->bindValue(":total_point", $productOrderData["final_point"]); //先寫死,等會員有再換掉
         $orders->bindValue(":final_price", $productOrderData["final_price"]);
         $orders->execute();
 
