@@ -1,6 +1,5 @@
 <?php
-
-ini_set("display_errors", "On");
+// ini_set("display_errors", "On");
 
 try {
     header("Access-Control-Allow-Origin: *");
@@ -15,85 +14,22 @@ try {
 
     // 從POST請求正文讀取數據
     $postData = json_decode(file_get_contents("php://input"), true);
-    $email = $postData['email'] ?? null; // 安全地檢查並分配email變量
+    // $email = $postData['email'] ?? null; // 安全地檢查並分配email變量
 
-    if (!$email) {
-        throw new Exception("沒有提供郵件地址");
-    }
+    // if (!$email) {
+    //     throw new Exception("沒有提供郵件地址");
+    // }
 
-    $sql = "SELECT * FROM member WHERE email = :member_email";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(":member_email", $email);
-    $stmt->execute();
-    $memberRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $sql = "select * from member where email = :member_email";
+    $members = $pdo->prepare($sql);
+    $members->bindValue(":member_email", $postData["email"]);
+    // $stmt->bindValue(":member_email", $email);
+    $members->execute();
+    $memberRow = $members->fetchAll(PDO::FETCH_ASSOC);
 
-    if ($memberRows) {
-        $result = ["error" => false, "msg" => "", "member" => $memberRows];
-    } else {
-        $result = ["error" => true, "msg" => "未找到會員資料"];
-    }
+    $result = ["error" => false, "member" => $memberRow];
 } catch (PDOException $e) {
     $result = ["error" => true, "msg" => $e->getMessage()];
 }
 
 echo json_encode($result);
-?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//     if (isset($_SESSION['member'])) {
-//         // 假設登入時，已將會員資訊存在 $_SESSION['member'] 中
-//         $memberData = $_SESSION['member']; // 直接從 session 中獲取會員資訊
-
-//         $result = ["error" => false, "msg" => "", "member" => $memberData];
-//     } else {
-//         // 如果 session 中沒有會員資訊
-//         $result = ["error" => true, "msg" => "請登入會員"];
-//     }
-// } catch (Exception $e) {
-//     $result = ["error" => true, "msg" => $e->getMessage()];
-// }
-
-// echo json_encode($result); // 將結果以 JSON 格式返回
-
-
-
-
-
-
-?>
